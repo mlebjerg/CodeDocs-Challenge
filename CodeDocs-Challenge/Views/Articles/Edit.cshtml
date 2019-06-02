@@ -1,0 +1,79 @@
+﻿@model CodeDocs_Challenge.Models.Article
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <input asp-for="Language" class="form-control" />
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourceUrl" class="control-label"></label>
+                <input asp-for="SourceUrl" class="form-control" />
+                <span asp-validation-for="SourceUrl" class="text-danger"></span>
+            </div>
+            @Html.Hidden("LastEdited", DateTime.Now)
+            <div class="form-group">
+                <label asp-for="ContentMD" class="control-label"></label>
+                <input asp-for="ContentMD" class="form-control" />
+                <span asp-validation-for="ContentMD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentHtml" class="control-label"></label>
+                <input asp-for="ContentHtml" class="form-control" />
+                <span asp-validation-for="ContentHtml" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            
+        </form>
+        
+    </div>
+</div>
+
+<div id="editor-wrapper" class="container-fluid">
+    <div class="row">
+        <textarea id="editor" data-ng-model="text" class="col-sm-6 ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style=""></textarea>
+        <div id="preview" sd-model-to-html="text" class=" col-sm-6 ng-isolate-scope">
+            <div ng-bind-html="trustedHtml" class="ng-binding"></div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script src="~/js/showdown.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+    $("#editor").keyup(function() {
+
+        var converter = new showdown.Converter(),
+            text = $("#editor").val();
+        $("#preview").html(converter.makeHtml(text));
+
+    });
+
+</script>

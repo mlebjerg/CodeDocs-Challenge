@@ -1,0 +1,63 @@
+﻿@model CodeDocs_Challenge.Models.Article
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <input asp-for="Language" class="form-control" />
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SourceUrl" class="control-label"></label>
+                <input asp-for="SourceUrl" class="form-control" />
+                <span asp-validation-for="SourceUrl" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastEdited" class="control-label"></label>
+                <input asp-for="LastEdited" class="form-control" />
+                <span asp-validation-for="LastEdited" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="ContentMD" class="control-label"></label>
+                <input asp-for="ContentMD" class="form-control" />
+                <span asp-validation-for="ContentMD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentHtml" class="control-label"></label>
+                <input asp-for="ContentHtml" class="form-control" />
+                <span asp-validation-for="ContentHtml" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
