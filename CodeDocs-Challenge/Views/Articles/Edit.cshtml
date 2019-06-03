@@ -1,4 +1,5 @@
-﻿@model CodeDocs_Challenge.Models.Article
+﻿@using System.Web
+@model CodeDocs_Challenge.Models.Article
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="editForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -20,8 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Language" class="control-label"></label>
-                <input asp-for="Language" class="form-control" />
-                <span asp-validation-for="Language" class="text-danger"></span>
+                <select asp-for="Language" class="LanguageSelect" style="width: 100%" multiple="multiple"></select>
             </div>
             <div class="form-group">
                 <label asp-for="SourceUrl" class="control-label"></label>
@@ -30,19 +30,11 @@
             </div>
             @Html.Hidden("LastEdited", DateTime.Now)
             <div class="form-group">
-                <label asp-for="ContentMD" class="control-label"></label>
-                <input asp-for="ContentMD" class="form-control" />
-                <span asp-validation-for="ContentMD" class="text-danger"></span>
+                <input type="hidden" id="contentMD" asp-for="ContentMD" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="ContentHtml" class="control-label"></label>
-                <input asp-for="ContentHtml" class="form-control" />
-                <span asp-validation-for="ContentHtml" class="text-danger"></span>
+                <input type="hidden" id="contentHtml" asp-for="ContentHtml" class="form-control" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-            
         </form>
         
     </div>
@@ -50,12 +42,17 @@
 
 <div id="editor-wrapper" class="container-fluid">
     <div class="row">
-        <textarea id="editor" data-ng-model="text" class="col-sm-6 ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style=""></textarea>
+        <textarea id="editor" asp-for="ContentMD" data-ng-model="text" class="col-sm-6 bg-dark text-white ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style=""></textarea>
         <div id="preview" sd-model-to-html="text" class=" col-sm-6 ng-isolate-scope">
-            <div ng-bind-html="trustedHtml" class="ng-binding"></div>
+            <div ng-bind-html="trustedHtml" class="ng-binding">@Html.Raw(HttpUtility.HtmlDecode(Model.ContentHtml))</div>
         </div>
     </div>
 </div>
+
+<div class="form-group">
+    <input onclick="submitJs()" value="Save" class="btn btn-primary" />
+</div>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -69,11 +66,35 @@
 <script language="JavaScript" type="text/javascript">
 
     $("#editor").keyup(function() {
+        convert();
+    });
 
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Articles/GetProgrammingLanguages",
+            success: function (result) {
+                var data = result.jsonObject;
+                $('.LanguageSelect').select2({
+                    data: data
+                });
+            }
+        });
+
+    });
+
+    function convert() {
         var converter = new showdown.Converter(),
             text = $("#editor").val();
         $("#preview").html(converter.makeHtml(text));
+    }
 
-    });
+    function submitJs() {
+        convert();
+        debugger;
+        $("#contentMD").val($("#editor").val());
+        $("#contentHtml").val($("#preview").html());
+
+        document.forms["editForm"].submit();
+    }
 
 </script>

@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="createForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -18,46 +18,81 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Language" class="control-label"></label>
-                <input asp-for="Language" class="form-control" />
-                <span asp-validation-for="Language" class="text-danger"></span>
+                <label asp-for="Language" class="control-label" ></label>
+                <select class="LanguageSelect" style="width: 100%" multiple="multiple">
+                </select>
+                <input type="hidden" asp-for="LanguageList" class="form-control" id="LanguageHidden"/>
             </div>
             <div class="form-group">
                 <label asp-for="SourceUrl" class="control-label"></label>
                 <input asp-for="SourceUrl" class="form-control" />
                 <span asp-validation-for="SourceUrl" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
+            <div class="form-group">
+                <input type="hidden" id="contentMD" asp-for="ContentMD" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="LastEdited" class="control-label"></label>
-                <input asp-for="LastEdited" class="form-control" />
-                <span asp-validation-for="LastEdited" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="ContentMD" class="control-label"></label>
-                <input asp-for="ContentMD" class="form-control" />
-                <span asp-validation-for="ContentMD" class="text-danger"></span>
+                <input type="hidden" id="contentHtml" asp-for="ContentHtml" class="form-control" />
             </div>
-            <div class="form-group">
-                <label asp-for="ContentHtml" class="control-label"></label>
-                <input asp-for="ContentHtml" class="form-control" />
-                <span asp-validation-for="ContentHtml" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            
         </form>
     </div>
+</div>
+<link href="~/Content/css/select2.css" rel="stylesheet" />
+<div id="editor-wrapper" class="container-fluid">
+    <div class="row">
+        <textarea id="editor" data-ng-model="text" class="col-sm-6 bg-dark text-white ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" style=""></textarea>
+        <div id="preview" sd-model-to-html="text" class=" col-sm-6 ng-isolate-scope">
+            <div ng-bind-html="trustedHtml" class="ng-binding"></div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <input onclick="submitJs()" value="Create" class="btn btn-primary" />
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script src="~/js/showdown.min.js"></script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+    $("#editor").keyup(function () {
+        convert();
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Articles/GetProgrammingLanguages",
+            success: function (result) {
+                var data = result.jsonObject;
+                $('.LanguageSelect').select2({
+                    data: data
+                });
+            }
+        });
+
+    });
+
+    function convert() {
+        var converter = new showdown.Converter(),
+            text = $("#editor").val();
+        $("#preview").html(converter.makeHtml(text));
+    }
+    function submitJs() {
+        convert();
+        $("#LanguageHidden").val($(".LanguageSelect").val());
+        debugger;
+        $("#contentMD").val($("#editor").val());
+        $("#contentHtml").val($("#preview").html());
+
+        document.forms["createForm"].submit();
+    }
+</script>

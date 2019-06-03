@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodeDocs_Challenge.Data;
 using CodeDocs_Challenge.Models;
+using Newtonsoft.Json;
 
 namespace CodeDocs_Challenge.Controllers
 {
@@ -81,6 +84,15 @@ namespace CodeDocs_Challenge.Controllers
                 return NotFound();
             }
             return View(article);
+        }
+
+        public ActionResult GetProgrammingLanguages()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\ProgrammingLanguages.json");
+            string allText = System.IO.File.ReadAllText(path);
+
+            var jsonObject = JsonConvert.DeserializeObject(allText);
+            return Json(new {jsonObject});
         }
 
         // POST: Articles/Edit/5
