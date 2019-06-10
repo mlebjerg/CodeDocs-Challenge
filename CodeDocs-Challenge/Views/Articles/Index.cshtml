@@ -34,7 +34,7 @@
     <tr onclick="document.location = '@(Url.Action("Details", new {Id = item.Id}))';">
         <td>
             @if(item.ImgBlob != null){
-            <img alt="object-fit: cover;" src="@item.ImgBlob" data-holder-rendered="true" style="height: auto; max-width:100%; vertical-align: bottom; object-fit: scale-down;">
+            <img alt="object-fit: cover;" src="@item.ImgBlob" data-holder-rendered="true" style="height: calc(47px - 24px); max-width:100%; object-fit: contain;">
             }
         </td>
         <td>
