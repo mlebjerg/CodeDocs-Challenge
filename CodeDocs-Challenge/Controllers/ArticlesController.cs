@@ -57,7 +57,7 @@ namespace CodeDocs_Challenge.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Language,SourceUrl,ContentMD,ContentHtml")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Name,Language,ImgBlob,SourceUrl,ContentMD,ContentHtml")] Article article)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace CodeDocs_Challenge.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Language,SourceUrl,LastEdited,ContentMD,ContentHtml")] Article article)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Language,ImgBlob,SourceUrl,LastEdited,ContentMD,ContentHtml")] Article article)
         {
             if (id != article.Id)
             {
@@ -118,6 +118,7 @@ namespace CodeDocs_Challenge.Controllers
                     orgArticle.ContentMD = article.ContentMD;
                     orgArticle.Language = article.Language;
                     orgArticle.SourceUrl = article.SourceUrl;
+                    orgArticle.ImgBlob = article.ImgBlob;
                     _context.Update(orgArticle);
                     await _context.SaveChangesAsync();
                 }

@@ -22,6 +22,7 @@ namespace CodeDocs_Challenge.Models
 
         public string Language  { get; set; }
         public string SourceUrl { get; set; }
+        public string ImgBlob { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastEdited { get; set; }
         public string ContentMD { get; set; }

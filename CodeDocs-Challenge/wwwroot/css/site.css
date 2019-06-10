@@ -18,6 +18,17 @@ html {
   }
 }
 
+
+#preview {
+    height: 97%;
+    max-height: 97%;
+    border: 1px solid #eee;
+    overflow-y: scroll;
+    overflow-x: auto;
+    width: 55%;
+    padding: 10px;
+}
+
 .border-top {
   border-top: 1px solid #e5e5e5;
 }

@@ -18,26 +18,41 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Language" class="control-label" ></label>
-                <select class="LanguageSelect" style="width: 100%" multiple="multiple">
-                </select>
-                <input type="hidden" asp-for="Language" class="form-control" id="LanguageHidden"/>
+                <label asp-for="Language" class="control-label"></label>
+                <select class="LanguageSelect" style="width: 100%" multiple="multiple"></select>
+                <input type="hidden" asp-for="Language" class="form-control" id="LanguageHidden" />
             </div>
+            <label for="ImgBlob" class="control-label">Image URL</label>
+            <div class="input-group mb-3">
+
+                <input type="text" class="form-control" id="validateUrl" placeholder="Paste image URL here">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" id="validateBtn" type="button">Validate</button>
+                </div>
+                <input type="hidden" asp-for="ImgBlob" id="validatedImgBlob" class="form-control" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="SourceUrl" class="control-label"></label>
                 <input asp-for="SourceUrl" class="form-control" />
                 <span asp-validation-for="SourceUrl" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="hidden" id="contentMD" asp-for="ContentMD" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="hidden" id="contentHtml" asp-for="ContentHtml" class="form-control" />
             </div>
-            
+
         </form>
     </div>
+    <div class="col-md-8">
+        <img id="testImg" data-src="holder.js/100px160/" class="pull-right" alt="object-fit: cover;" src="" data-holder-rendered="true" style="height: 160px; width: 100%; display: block; object-fit: scale-down;">
+    </div>
 </div>
+
+
 <link href="~/Content/css/select2.css" rel="stylesheet" />
 <div id="editor-wrapper" class="container-fluid">
     <div class="row">
@@ -80,6 +95,28 @@
         });
 
     });
+
+    $("#validateBtn").on("click", function() {
+        toDataUrl($("#validateUrl").val(), function(myBase64) {
+            $("#testImg").attr("src", myBase64);
+            $("#validatedImgBlob").val(myBase64);
+        });
+
+    });
+
+    function toDataUrl(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
+    }
 
     function convert() {
         var converter = new showdown.Converter(),

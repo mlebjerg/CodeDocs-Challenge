@@ -13,9 +13,9 @@
     @foreach (var item in Model)
     {
         <div class="card" onclick="document.location = '@(Url.Action("Details", "Articles",new { Id = item.Id }))'">
-           @if (true)
+           @if ( item.ImgBlob != null)
            {
-               <img class="card-img-top" data-src="holder.js/100px160/" alt="object-fit: cover;" src="https://raw.githubusercontent.com/showdownjs/logo/master/dist/logo.readme.png" data-holder-rendered="true" style="height: 160px; width: 100%; display: block; object-fit: scale-down;">
+               <img class="card-img-top" data-src="holder.js/100px160/" alt="object-fit: cover;" src="@item.ImgBlob" data-holder-rendered="true" style="height: 160px; width: 100%; display: block; object-fit: scale-down;">
            }
                <div class="card-body">
                 <h5 class="card-title">@item.Name</h5>

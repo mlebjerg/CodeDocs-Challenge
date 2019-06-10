@@ -5,18 +5,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<img class="pull-left" alt="object-fit: cover;" src="@Model.ImgBlob" data-holder-rendered="true" style="height: 160px; width: 100%; display: block; object-fit: scale-down;">
+
 
 <div>
-    <h4>Article</h4>
+    <h4>@Model.Name</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Language)
         </dt>
