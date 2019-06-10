@@ -1,8 +1,30 @@
-﻿@{
+﻿@using Humanizer
+@model IEnumerable<CodeDocs_Challenge.Models.Article>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card" onclick="document.location = '@(Url.Action("Details", "Articles",new { Id = item.Id }))'">
+           @if (true)
+           {
+               <img class="card-img-top" data-src="holder.js/100px160/" alt="object-fit: cover;" src="https://raw.githubusercontent.com/showdownjs/logo/master/dist/logo.readme.png" data-holder-rendered="true" style="height: 160px; width: 100%; display: block; object-fit: scale-down;">
+           }
+               <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">  @foreach(var lang in item.LanguageList)
+                                       {<span class="badge badge-pill badge-secondary">@lang</span> }</p>
+                <p class="card-text"><small class="text-muted">Last updated @item.LastEdited.ToUniversalTime().Humanize()</small></p>
+            </div>
+        </div>
+    }
+   </div>
+
+

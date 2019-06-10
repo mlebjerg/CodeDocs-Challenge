@@ -21,7 +21,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Language" class="control-label"></label>
-                <select asp-for="Language" class="LanguageSelect" style="width: 100%" multiple="multiple"></select>
+                <select class="LanguageSelect" style="width: 100%" multiple="multiple"></select>
+                <input type="hidden" asp-for="Language" class="form-control" id="LanguageHidden" />
             </div>
             <div class="form-group">
                 <label asp-for="SourceUrl" class="control-label"></label>
@@ -65,11 +66,13 @@
 <script src="~/js/showdown.min.js"></script>
 <script language="JavaScript" type="text/javascript">
 
-    $("#editor").keyup(function() {
+    $("#editor").keyup(function () {
         convert();
     });
 
     $(document).ready(function () {
+
+
         $.ajax({
             url: "/Articles/GetProgrammingLanguages",
             success: function (result) {
@@ -77,24 +80,30 @@
                 $('.LanguageSelect').select2({
                     data: data
                 });
+
+                var selectedJson = JSON.parse($("#LanguageHidden").val());
+                $(".LanguageSelect").val(selectedJson).trigger('change');
+
             }
         });
 
-    });
+  
+});
 
-    function convert() {
-        var converter = new showdown.Converter(),
-            text = $("#editor").val();
-        $("#preview").html(converter.makeHtml(text));
-    }
+function convert() {
+    var converter = new showdown.Converter(),
+        text = $("#editor").val();
+    $("#preview").html(converter.makeHtml(text));
+}
 
-    function submitJs() {
-        convert();
-        debugger;
-        $("#contentMD").val($("#editor").val());
-        $("#contentHtml").val($("#preview").html());
+function submitJs() {
+    convert();
+    debugger;
+    $("#LanguageHidden").val(JSON.stringify($(".LanguageSelect").select2("val")));
+    $("#contentMD").val($("#editor").val());
+    $("#contentHtml").val($("#preview").html());
 
-        document.forms["editForm"].submit();
-    }
+    document.forms["editForm"].submit();
+}
 
 </script>

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CodeDocs_Challenge.Models.Article>
+﻿@using Newtonsoft.Json
+@model IEnumerable<CodeDocs_Challenge.Models.Article>
 
 @{
     ViewData["Title"] = "Index";
@@ -32,7 +33,8 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LanguageList)
+                @foreach(var lang in item.LanguageList)
+                {<span class="badge badge-pill badge-secondary">@lang</span> }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Created)

@@ -13,16 +13,13 @@ namespace CodeDocs_Challenge.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
         [NotMapped]
         public List<string> LanguageList
         {
-            get =>
-
-                JsonConvert.DeserializeObject<List<string>>(Language);
-
-        set =>
-                JsonConvert.SerializeObject(value);
+            get => JsonConvert.DeserializeObject<List<string>>(Language);
         }
+
         public string Language  { get; set; }
         public string SourceUrl { get; set; }
         public DateTime Created { get; set; }
