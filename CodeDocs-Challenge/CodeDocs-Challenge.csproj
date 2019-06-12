@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>CodeDocs_Challenge</RootNamespace>
     <LangVersion>7.2</LangVersion>
+    <UserSecretsId>cf42c7d9-1bad-41dc-b42a-214d0a49ca97</UserSecretsId>
   </PropertyGroup>
 
 
